@@ -1,16 +1,18 @@
 package br.com.edukacode.api;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -21,7 +23,7 @@ public class LeadController {
     private LeadRepository repository;
 
     @PostMapping
-    public String criarLead(@RequestBody DadosCadastroLead dados){
+    public String criarLead(@RequestBody @Valid DadosCadastroLead dados){
         System.out.println("Lead recebidos: "+dados);
         repository.save(new Lead(null, dados.nome(), dados.email(), dados.telefone(), dados.cpf()));
         return "Lead criado com sucesso";
@@ -29,9 +31,11 @@ public class LeadController {
     }
 
     @GetMapping
-    public List<DadosListagemLead> listarLeads(){
-        return repository.findAll().stream().map(DadosListagemLead::new).toList();
+    public Page<DadosListagemLead>listarLeads(@PageableDefault(size=15,sort={"nome"})
+    Pageable paginacaoPageable){
+        return repository.findAll(paginacaoPageable).map(DadosListagemLead::new);
     }
+
 
     @PutMapping
     public void atualizarLead(){

@@ -21,6 +21,10 @@ import lombok.NoArgsConstructor;
 
 class Genero {
     @Id @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nome;
+
+    public Genero(DadosCadastroGenero dados){
+        this.nome = dados.nome();
+    }
 }

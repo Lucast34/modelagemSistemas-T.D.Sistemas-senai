@@ -1,11 +1,9 @@
 package br.com.edukacode.api;
 
-public record DadosListagemLead(String nome, String email, String telefone) {
+public record DadosListagemLead(String nome, String email, String telefone, String cpf) {
 
-    public DadosListagemLead() {
-        this.email = email;
-        this.nome = nome;
-        this.telefone = telefone;
+    public DadosListagemLead(Lead lead) {
+        this(lead.getNome(), lead.getEmail(),lead.getTelefone(), lead.getCpf());
     }
 
 
