@@ -1,5 +1,16 @@
 package br.com.edukacode.api.dto;
 
-public record DadosAtualizacaoLead() {
+import jakarta.validation.constraints.NotBlank;
+
+public record DadosAtualizacaoLead(
+    @NotBlank
+    Long id,
+
+    String nome,
+    String email,
+    String telefone,
+    String cpf
+
+) {
 
 }
